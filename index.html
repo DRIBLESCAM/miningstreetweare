@@ -9,7 +9,7 @@
         body{
             font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;
             background:#f2f2f7;color:#000;
-            padding-top:120px;padding-bottom:80px;
+            padding-top:100px;padding-bottom:80px;
         }
         header{
             position:fixed;top:0;left:0;right:0;height:100px;
@@ -17,47 +17,55 @@
             display:flex;align-items:center;justify-content:space-between;
             padding:0 20px;z-index:1000;border-bottom:1px solid #ddd;
         }
-        .search{font-size:22px;opacity:0.6;}
-        .logo{font-weight:800;font-size:20px;position:absolute;left:50%;transform:translateX(-50%);}
-        .avatar{width:38px;height:38px;border-radius:50%;background:#ddd;display:flex;align-items:center;justify-content:center;cursor:pointer;font-weight:bold;}
+        .search-icon{
+            width:44px;height:44px;display:flex;align-items:center;justify-content:center;
+            cursor:pointer;opacity:0.65;transition:0.2s;
+        }
+        .search-icon:hover{opacity:1;}
+        .search-icon svg{width:26px;height:26px;}
 
-        /* BOTÕES AGORA ROLAM COM A PÁGINA (NÃO FIXOS) */
+        .logo{font-weight:800;font-size:20px;}
+        .avatar{
+            width:40px;height:40px;border-radius:50%;background:#ddd;
+            display:flex;align-items:center;justify-content:center;
+            font-weight:bold;font-size:18px;cursor:pointer;position:relative;
+        }
+        .dropdown{
+            position:absolute;top:70px;right:0;background:white;
+            border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,0.18);
+            width:200px;overflow:hidden;display:none;z-index:2000;
+        }
+        .dropdown.show{display:block;animation:fadeIn 0.2s;}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(-10px);}to{opacity:1;transform:translateY(0);}}
+        .dropdown a{
+            display:block;padding:16px 20px;text-decoration:none;color:#000;
+            font-weight:500;transition:0.2s;border-bottom:1px solid #eee;
+        }
+        .dropdown a:last-child{border:none;}
+        .dropdown a:hover{background:#f5f5f5;}
+
         .filters{
-            display:flex;gap:20px;justify-content:center;
-            margin:20px 0 40px;
+            display:flex;gap:20px;justify-content:center;margin:20px 0 50px;
         }
         .filter-btn{
             padding:12px 32px;border-radius:30px;font-weight:700;font-size:15px;
             background:rgba(255,255,255,0.95);border:none;
-            box-shadow:0 8px 25px rgba(0,0,0,0.12);transition:0.3s;
+            box-shadow:0 8px 25px rgba(0,0,0,0.12);transition:0.3s;cursor:pointer;
         }
-        .filter-btn.active{
-            background:#000;color:white;
-        }
+        .filter-btn.active{background:#000;color:white;}
 
         .grid{
-            display:grid;
-            grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
-            gap:22px;
-            padding:0 20px;
-            max-width:1400px;margin:0 auto;
+            display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
+            gap:22px;padding:0 20px;max-width:1400px;margin:0 auto;
         }
         .card{
             background:white;border-radius:24px;overflow:hidden;
-            box-shadow:0 8px 25px rgba(0,0,0,0.1);transition:0.2s;
+            box-shadow:0 8px 25px rgba(0,0,0,0.1);transition:0.2s;cursor:pointer;
         }
         .card img{width:100%;height:190px;object-fit:cover;}
         .info{padding:14px;text-align:center;}
         .name{font-size:14px;font-weight:600;color:#333;margin-bottom:4px;}
         .price{font-size:16px;font-weight:700;}
-
-        .login-menu{
-            position:fixed;top:110px;right:15px;background:white;border-radius:18px;
-            box-shadow:0 10px 40px rgba(0,0,0,0.2);width:200px;display:none;z-index:1001;
-        }
-        .login-menu a{display:block;padding:16px 20px;text-decoration:none;color:#000;font-weight:500;}
-        .login-menu a:first-child{background:#000;color:white;font-weight:600;}
-        .login-menu.show{display:block;}
 
         footer{text-align:center;padding:20px;color:#888;font-size:13px;background:rgba(242,242,247,0.9);}
     </style>
@@ -65,12 +73,22 @@
 <body>
 
     <header>
-        <div class="search">Search</div>
+        <!-- LUPA GARANTIDA COM SVG -->
+        <div class="search-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="m21 21-4.35-4.35"/>
+            </svg>
+        </div>
         <div class="logo">MiningStreetweare</div>
-        <div class="avatar" onclick="document.querySelector('.login-menu').classList.toggle('show')">M</div>
+        <div class="avatar" id="avatar">M
+            <div class="dropdown" id="dropdown">
+                <a href="#">Login</a>
+                <a href="#">Criar conta</a>
+            </div>
+        </div>
     </header>
 
-    <!-- botões agora rolam com a página -->
     <div class="filters">
         <button class="filter-btn active" onclick="showAll()">Recentes</button>
         <button class="filter-btn" onclick="filter('sneaker')">Sneakers</button>
@@ -78,38 +96,31 @@
     </div>
 
     <div class="grid">
-        <!-- seus 16+ produtos aqui (mesmos de antes) -->
         <div class="card" data-type="sneaker"><img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=500" alt=""><div class="info"><div class="name">MS-18 Onyx</div><div class="price">R$ 2.390</div></div></div>
         <div class="card" data-type="camiseta"><img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500" alt=""><div class="info"><div class="name">Mining Tee Shadow</div><div class="price">R$ 399</div></div></div>
-        <div class="card" data-type="sneaker"><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=500" alt=""><div class="info"><div class="name">MS-15 Bone</div><div class="price">R$ 2.190</div></div></div>
-        <div class="card" data-type="camiseta"><img src="https://images.unsplash.com/photo-1586363102778-55b5f6b242d3?w=500" alt=""><div class="info"><div class="name">Mining Tee White</div><div class="price">R$ 379</div></div></div>
-        <div class="card" data-type="sneaker"><img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500" alt=""><div class="info"><div class="name">MS-12 Shadow</div><div class="price">R$ 1.990</div></div></div>
-        <div class="card" data-type="camiseta"><img src="https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=500" alt=""><div class="info"><div class="name">Mining Tee Red Box</div><div class="price">R$ 429</div></div></div>
-        <div class="card" data-type="sneaker"><img src="https://images.unsplash.com/photo-1605406575497-967987346ec0?w=500" alt=""><div class="info"><div class="name">MS-09 Grey</div><div class="price">R$ 2.090</div></div></div>
-        <div class="card" data-type="camiseta"><img src="https://images.unsplash.com/photo-1622440156716-1af7808e6c4a?w=500" alt=""><div class="info"><div class="name">Mining Tee Cream</div><div class="price">R$ 399</div></div></div>
-        <!-- continua com quantos quiser -->
-    </div>
-
-    <div class="login-menu">
-        <a href="#">Login</a>
-        <a href="#">Criar Conta</a>
-        <a href="#" style="color:#888;font-size:14px;">Fechar</a>
+        <!-- teus outros produtos -->
     </div>
 
     <footer>© 2025 MiningStreetweare</footer>
 
     <script>
+        document.getElementById('avatar').addEventListener('click', function(e){
+            e.stopPropagation();
+            document.getElementById('dropdown').classList.toggle('show');
+        });
+        document.addEventListener('click', () => document.getElementById('dropdown').classList.remove('show'));
+
         function showAll(){
-            document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             event.target.classList.add('active');
-            document.querySelectorAll('.card').forEach(c=>c.style.display='block');
+            document.querySelectorAll('.card').forEach(c => c.style.display = 'block');
         }
         function filter(t){
-            document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             event.target.classList.add('active');
-            document.querySelectorAll('.card').forEach(c=>c.style.display=c.dataset.type===t?'block':'none');
+            document.querySelectorAll('.card').forEach(c => c.style.display = c.dataset.type === t ? 'block' : 'none');
         }
-        window.onload=()=>showAll();
+        window.onload = () => showAll();
     </script>
 </body>
 </html>
