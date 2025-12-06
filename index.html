@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiningStreetweare</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{
+            font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;
+            background:#f2f2f7;color:#000;
+            padding-top:120px;padding-bottom:80px;
+        }
+        header{
+            position:fixed;top:0;left:0;right:0;height:100px;
+            background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);
+            display:flex;align-items:center;justify-content:space-between;
+            padding:0 20px;z-index:1000;border-bottom:1px solid #ddd;
+        }
+        .search{font-size:22px;opacity:0.6;}
+        .logo{font-weight:800;font-size:20px;position:absolute;left:50%;transform:translateX(-50%);}
+        .avatar{width:38px;height:38px;border-radius:50%;background:#ddd;display:flex;align-items:center;justify-content:center;cursor:pointer;font-weight:bold;}
+
+        /* BOTÕES AGORA ROLAM COM A PÁGINA (NÃO FIXOS) */
+        .filters{
+            display:flex;gap:20px;justify-content:center;
+            margin:20px 0 40px;
+        }
+        .filter-btn{
+            padding:12px 32px;border-radius:30px;font-weight:700;font-size:15px;
+            background:rgba(255,255,255,0.95);border:none;
+            box-shadow:0 8px 25px rgba(0,0,0,0.12);transition:0.3s;
+        }
+        .filter-btn.active{
+            background:#000;color:white;
+        }
+
+        .grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
+            gap:22px;
+            padding:0 20px;
+            max-width:1400px;margin:0 auto;
+        }
+        .card{
+            background:white;border-radius:24px;overflow:hidden;
+            box-shadow:0 8px 25px rgba(0,0,0,0.1);transition:0.2s;
+        }
+        .card img{width:100%;height:190px;object-fit:cover;}
+        .info{padding:14px;text-align:center;}
+        .name{font-size:14px;font-weight:600;color:#333;margin-bottom:4px;}
+        .price{font-size:16px;font-weight:700;}
+
+        .login-menu{
+            position:fixed;top:110px;right:15px;background:white;border-radius:18px;
+            box-shadow:0 10px 40px rgba(0,0,0,0.2);width:200px;display:none;z-index:1001;
+        }
+        .login-menu a{display:block;padding:16px 20px;text-decoration:none;color:#000;font-weight:500;}
+        .login-menu a:first-child{background:#000;color:white;font-weight:600;}
+        .login-menu.show{display:block;}
+
+        footer{text-align:center;padding:20px;color:#888;font-size:13px;background:rgba(242,242,247,0.9);}
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="search">Search</div>
+        <div class="logo">MiningStreetweare</div>
+        <div class="avatar" onclick="document.querySelector('.login-menu').classList.toggle('show')">M</div>
+    </header>
+
+    <!-- botões agora rolam com a página -->
+    <div class="filters">
+        <button class="filter-btn active" onclick="showAll()">Recentes</button>
+        <button class="filter-btn" onclick="filter('sneaker')">Sneakers</button>
+        <button class="filter-btn" onclick="filter('camiseta')">Camisetas</button>
+    </div>
+
+    <div class="grid">
+        <!-- seus 16+ produtos aqui (mesmos de antes) -->
+        <div class="card" data-type="sneaker"><img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=500" alt=""><div class="info"><div class="name">MS-18 Onyx</div><div class="price">R$ 2.390</div></div></div>
+        <div class="card" data-type="camiseta"><img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500" alt=""><div class="info"><div class="name">Mining Tee Shadow</div><div class="price">R$ 399</div></div></div>
+        <div class="card" data-type="sneaker"><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=500" alt=""><div class="info"><div class="name">MS-15 Bone</div><div class="price">R$ 2.190</div></div></div>
+        <div class="card" data-type="camiseta"><img src="https://images.unsplash.com/photo-1586363102778-55b5f6b242d3?w=500" alt=""><div class="info"><div class="name">Mining Tee White</div><div class="price">R$ 379</div></div></div>
+        <div class="card" data-type="sneaker"><img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500" alt=""><div class="info"><div class="name">MS-12 Shadow</div><div class="price">R$ 1.990</div></div></div>
+        <div class="card" data-type="camiseta"><img src="https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=500" alt=""><div class="info"><div class="name">Mining Tee Red Box</div><div class="price">R$ 429</div></div></div>
+        <div class="card" data-type="sneaker"><img src="https://images.unsplash.com/photo-1605406575497-967987346ec0?w=500" alt=""><div class="info"><div class="name">MS-09 Grey</div><div class="price">R$ 2.090</div></div></div>
+        <div class="card" data-type="camiseta"><img src="https://images.unsplash.com/photo-1622440156716-1af7808e6c4a?w=500" alt=""><div class="info"><div class="name">Mining Tee Cream</div><div class="price">R$ 399</div></div></div>
+        <!-- continua com quantos quiser -->
+    </div>
+
+    <div class="login-menu">
+        <a href="#">Login</a>
+        <a href="#">Criar Conta</a>
+        <a href="#" style="color:#888;font-size:14px;">Fechar</a>
+    </div>
+
+    <footer>© 2025 MiningStreetweare</footer>
+
+    <script>
+        function showAll(){
+            document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+            event.target.classList.add('active');
+            document.querySelectorAll('.card').forEach(c=>c.style.display='block');
+        }
+        function filter(t){
+            document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+            event.target.classList.add('active');
+            document.querySelectorAll('.card').forEach(c=>c.style.display=c.dataset.type===t?'block':'none');
+        }
+        window.onload=()=>showAll();
+    </script>
+</body>
+</html>
